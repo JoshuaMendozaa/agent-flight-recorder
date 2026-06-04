@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Secrets — NEVER commit these
+.env
+*.env
+
+# Local database (don't commit your dev data)
+*.db
+
+# macOS / editors
+.DS_Store
+.idea/
+.vscode/
+EOF
