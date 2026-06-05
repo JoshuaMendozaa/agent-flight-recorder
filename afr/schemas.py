@@ -12,16 +12,16 @@ what lets one Span shape handle all the different span types."""
 class SpanType(str, Enum):
     """Enum for span types."""
     LLM_CALL = "llm_call"
-    TOOL_CALL = "TOOL_CALL"
-    RETRIEVAL = "RETRIEVAL"
-    GUARDRAIL = "GUARDRAIL"
-    OTHER = "OTHER"
+    TOOL_CALL = "tool_call"
+    RETRIEVAL = "retrieval"
+    GUARDRAIL = "guardrail"
+    OTHER = "other"
 
 class RunStatus(str, Enum):
     """Enum for run status."""
-    RUNNING = "RUNNING"
+    RUNNING = "running"
     SUCCESS = "success"
-    ERROR = "ERROR"
+    ERROR = "error"
 #Plain strings stay portable across SQLite and Postgres and dodge migration pain when you add a span type.
 #these are the pydantic models that mirror the database schema, but with proper types and validation. The API layer will use these models to validate incoming data and to serialize outgoing data, while the storage layer (db.py) will use the SQLAlchemy models which are more focused on how data is stored rather than how it's used in the application logic.
 class Span(BaseModel):
