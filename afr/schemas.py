@@ -41,7 +41,7 @@ class Run(BaseModel):
     """Pydantic model for a run."""
     id: str = Field(default_factory=lambda: str(uuid4()))
     agent_name: str
-    status: RunStatus   #already validated here
+    status: RunStatus = RunStatus.RUNNING   #already validated here
     started_at: datetime
     ended_at: Optional[datetime] = None
     input: Optional[dict] = None
