@@ -2,7 +2,7 @@
 
 > A black-box recorder for AI agents: trace what happened, evaluate what broke, and make agent behavior easier to debug, audit, and improve.
 
-**Agent Flight Recorder** is an in-progress AI agent observability project. It captures structured execution traces from agent runs, including LLM calls, tool calls, tool results, failures, costs, and run metadata. The goal is to make autonomous agent behavior inspectable instead of treating it like an opaque chat transcript.
+**Agent Flight Recorder** is an in-progress AI agent observability project. It captures structured execution traces from agent runs, including LLM calls, tool calls, tool results, failures, costs, and run metadata. The goal is to make autonomous agent behavior examinable instead of treating it like an obscure chat transcript.
 
 This is not another chatbot. It is infrastructure for understanding, debugging, and eventually evaluating AI agents.
 
