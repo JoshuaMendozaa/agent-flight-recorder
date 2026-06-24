@@ -1,9 +1,10 @@
 """Database models and init logic using SQLAlchemy. This is the storage layer that defines how data is stored in the database, and it uses SQLAlchemy's ORM to map Python classes to database tables. The API layer (api.py) will use these models to interact with the database, while the schemas (schemas.py) define the data structures used for validation and serialization at the API boundary."""
-from sqlalchemy import create_engine, String, DateTime, JSON, ForeignKey
+from sqlalchemy import create_engine, String, DateTime, JSON, ForeignKey, Integer
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, relationship, mapped_column, Mapped
 from typing import Optional
 import os
 import datetime
+
 
 engine = create_engine(os.getenv("DATABASE_URL", "sqlite:///afr.db"), echo=False, future=True)
 SessionLocal = sessionmaker(bind=engine)    #this is the factory for creating new database sessions. Whenever we want to interact with the database, we will create a new session using this factory, which ensures that we have a fresh session for each request or operation.
@@ -26,7 +27,7 @@ class RunRow(Base): #why Row? to distinguish from the pydantic models in schemas
     input: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
     output: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
     run_metadata: Mapped[dict] = mapped_column(JSON, default=dict) # this is the flexible bag for run-specific data
-    spans: Mapped[list["SpanRow"]] = relationship("SpanRow", back_populates="run", cascade="all, delete-orphan")
+    spans: Mapped[list["SpanRow"]] = relationship("SpanRow", back_populates="run", cascade="all, delete-orphan", order_by="SpanRow.sequence")
 
 class SpanRow(Base):
     __tablename__ = "spans"
@@ -38,7 +39,8 @@ class SpanRow(Base):
     started_at: Mapped[datetime] = mapped_column(DateTime)
     ended_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, nullable=True)
     input: Mapped[Optional[dict]] = mapped_column(JSON)
-    output: Mapped[dict] = mapped_column(JSON, nullable=True)
+    output: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
     error: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     attributes: Mapped[dict] = mapped_column(JSON, default=dict)   # this is the flexible bag for span-specific data
     run: Mapped["RunRow"] = relationship("RunRow", back_populates="spans")
+    sequence: Mapped[int] = mapped_column(Integer)

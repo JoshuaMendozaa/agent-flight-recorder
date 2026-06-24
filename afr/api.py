@@ -33,8 +33,9 @@ def _row_to_schema(row: RunRow) -> Run:
             ended_at=span_row.ended_at,
             input=span_row.input,
             output=span_row.output,
-            error=span_row.error,
-            attributes=span_row.attributes
+            error=span_row.error,   
+            attributes=span_row.attributes,
+            sequence=span_row.sequence
         ) for span_row in row.spans]
     )
 
@@ -55,6 +56,11 @@ app = FastAPI(
 def create_run(run: Run):
     """Create a new run with spans"""
     with SessionLocal() as session:
+        existing = session.get(RunRow, run.id)
+        if existing:
+            session.delete(existing)
+            session.flush()
+
         row = RunRow(
             id=run.id,
             agent_name=run.agent_name,
@@ -74,7 +80,8 @@ def create_run(run: Run):
                 input=span.input,
                 output=span.output,
                 error=span.error,
-                attributes=span.attributes
+                attributes=span.attributes,
+                sequence=span.sequence
             ) for span in run.spans]
         )
         session.add(row)

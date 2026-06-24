@@ -36,6 +36,7 @@ class Span(BaseModel):
     output: Optional[dict] = None
     error: Optional[str] = None
     attributes: dict = Field(default_factory=dict)
+    sequence: int = 0
 
 class Run(BaseModel):
     """Pydantic model for a run."""
@@ -46,5 +47,5 @@ class Run(BaseModel):
     ended_at: Optional[datetime] = None
     input: Optional[dict] = None
     output: Optional[dict] = None
-    metadata: Optional[dict] = Field(default_factory=dict)
+    metadata: dict = Field(default_factory=dict)
     spans: List[Span] = Field(default_factory=list)

@@ -16,6 +16,9 @@ env/
 # Local database (don't commit your dev data)
 *.db
 
+# Captured traces (local sample data, not source)
+traces/
+
 # macOS / editors
 .DS_Store
 .idea/
@@ -23,4 +26,3 @@ env/
 
 CLAUDE.md
 .claude/
-EOF

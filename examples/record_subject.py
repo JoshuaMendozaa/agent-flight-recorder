@@ -2,11 +2,11 @@ import asyncio
 from pathlib import Path
 from dotenv import load_dotenv
 from claude_agent_sdk import (
-    query, ClaudeAgentOptions,
-    AssistantMessage, TextBlock, ToolUseBlock, ToolResultBlock, ResultMessage,
+    query, ClaudeAgentOptions
 )
 
 from afr.tracer import record_run
+from afr.client import post_run
 
 load_dotenv(dotenv_path=".env") #load environment variables from .env file
 
@@ -25,6 +25,9 @@ async def main() -> None:
     trace_path = trace_dir / f"{run.id}.json"
     trace_path.write_text(run.model_dump_json(indent=2))
     print(f"trace saved to {trace_path}")
+
+    await post_run(run)
+    print(f"run landed")
 
 
 if __name__ == "__main__":
